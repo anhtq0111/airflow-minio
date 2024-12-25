@@ -18,9 +18,9 @@ def demo_airflow_minio():
                         secret_key='airflow-minio',
                         secure=False
                         )
-            return client
         except  S3Error as exc:
             print("error occurred.", exc)
+        return client
     client = connect_to_minio()
 
     @task
