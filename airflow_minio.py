@@ -12,14 +12,14 @@ destination_file = "test.txt"
 def demo_airflow_minio():
     @task
     def connect_to_minio():
-        try:
-            client = Minio(endpoint= '192.168.1.18:32023',
-                        access_key='airflow-minio',
-                        secret_key='airflow-minio',
-                        secure=False
-                        )
-        except  S3Error as exc:
-            print("error occurred.", exc)
+        # try:
+        client = Minio(endpoint= '192.168.1.18:32023',
+                    access_key='airflow-minio',
+                    secret_key='airflow-minio',
+                    secure=False
+                    )
+        # except  S3Error as exc:
+        #     print("error occurred.", exc)
         return client
     client = connect_to_minio()
 
