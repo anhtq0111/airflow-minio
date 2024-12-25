@@ -29,7 +29,7 @@ def demo_airflow_minio():
             print("Created bucket", bucket_name)
         else:
             print("Bucket", bucket_name, "already exists")
-
+    create = create_bucket()
     @task
     def upload_file(bucket_name, source_file, destination_file):
         client = get_minio_client()
@@ -41,7 +41,7 @@ def demo_airflow_minio():
             destination_file, "to bucket", bucket_name,
         )
     upload = upload_file(bucket_name, source_file, destination_file)
-    create_bucket() >> upload
+    create >> upload
 
 airflow_minio = demo_airflow_minio()
 
