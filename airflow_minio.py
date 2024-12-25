@@ -3,7 +3,8 @@ from airflow.decorators import dag, task
 import pendulum 
 from minio.error import S3Error
 import json
-source_file = "airflow_minio.txt"
+
+source_file = "/opt/airflow/dags/airflow_minio.txt"
 
 # The destination bucket and filename on the MinIO server
 bucket_name = "airflow-bucket"
