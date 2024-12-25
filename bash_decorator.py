@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-import pendulum
-
+import pendulum 
 from airflow.decorators import dag, task
 from airflow.exceptions import AirflowSkipException
 from airflow.models.baseoperator import chain
