@@ -3,7 +3,7 @@ from airflow.decorators import dag, task
 import pendulum 
 from minio.error import S3Error
 import json
-source_file = "/opt/airflow/airflow_minio.txt"
+source_file = "airflow_minio.txt"
 
 # The destination bucket and filename on the MinIO server
 bucket_name = "airflow-bucket"
@@ -16,18 +16,9 @@ def get_minio_client():
         secret_key="airflow-minio",
         secure=False
     )
-def generate_csv_file(source_file):
-    data = 'hehe haha hihi'
-    with open(source_file, 'w') as f:
-        f.write(data)
 
 @dag(schedule=None, start_date=pendulum.datetime(2024, 1, 1, tz="UTC"), catchup=False)
 def demo_airflow_minio():
-    @task
-    def create_file(source_file):
-        generate_csv_file(source_file)
-        print("Created file")
-    create_f = create_file(source_file)
     @task
     def create_bucket():
         client = get_minio_client()
@@ -49,7 +40,7 @@ def demo_airflow_minio():
             destination_file, "to bucket", bucket_name,
         )
     upload = upload_file(bucket_name, source_file, destination_file)
-    create_f >> create >> upload
+    create >> upload
 
 airflow_minio = demo_airflow_minio()
 
