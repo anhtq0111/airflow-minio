@@ -2,12 +2,13 @@ from minio import Minio
 from airflow.decorators import dag, task
 import pendulum 
 from minio.error import S3Error
+
 source_file = "airflow_minio.txt"
 
 # The destination bucket and filename on the MinIO server
 bucket_name = "airflow-bucket"
 destination_file = "test.txt"
-@dag(schedule=None, start_date=pendulum.datetime(2024, 1, 1, tz="UTC", catchup=False))
+@dag(schedule=None, start_date=pendulum.datetime(2024, 1, 1, tz="UTC"), catchup=False)
 def demo_airflow_minio():
     @task
     def connect_to_minio():
