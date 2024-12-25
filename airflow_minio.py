@@ -17,13 +17,8 @@ def get_minio_client():
         secure=False
     )
 def generate_csv_file(source_file):
-    data = {
-        'id': [1, 2, 3],
-        'name': ['Alice', 'Bob', 'Charlie'],
-        'age': [25, 30, 35],
-    }
-    data = json.dumps(data)
-    with open(source_file) as f:
+    data = 'hehe haha hihi'
+    with open(source_file, 'w') as f:
         f.write(data)
 
 @dag(schedule=None, start_date=pendulum.datetime(2024, 1, 1, tz="UTC"), catchup=False)
