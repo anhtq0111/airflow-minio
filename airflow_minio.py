@@ -40,7 +40,8 @@ def demo_airflow_minio():
             source_file, "successfully uploaded as object",
             destination_file, "to bucket", bucket_name,
         )
-    create_bucket() >> upload_file(bucket_name, source_file, destination_file)
+    upload = upload_file(bucket_name, source_file, destination_file)
+    create_bucket() >> upload
 
 airflow_minio = demo_airflow_minio()
 
