@@ -38,20 +38,15 @@ def etlpipeline__exact101():
         
 
     run_staging = KubernetesPodOperator(
-        task_id='staging',
-        name='staging',
         namespace='anhtq-airflow',
         image='quocanh2202/airflow-dbt:latest',
+        name='staging',
         cmds=["/bin/bash", "-c", bash_command_staging],
         in_cluster=True,
-        is_delete_operator_pod=True,
         startup_timeout_seconds=7200,
-        # log stdout of the container as task logs
         get_logs=True,
-        # log events in case of Pod failure
-        log_events_on_failure=True,
-        # enable pushing to XCom
         do_xcom_push=True,
+        is_delete_operator_pod=True,
     )
 
     run_rawvault = KubernetesPodOperator(
@@ -61,14 +56,10 @@ def etlpipeline__exact101():
         image='quocanh2202/airflow-dbt:latest',
         cmds=["/bin/bash", "-c", bash_command_raw_vault],
         in_cluster=True,
-        is_delete_operator_pod=True,
         startup_timeout_seconds=7200,
-        # log stdout of the container as task logs
         get_logs=True,
-        # log events in case of Pod failure
-        log_events_on_failure=True,
-        # enable pushing to XCom
         do_xcom_push=True,
+        is_delete_operator_pod=True,
     )
 
     @task()
