@@ -2,7 +2,6 @@ from minio import Minio
 from airflow.decorators import dag, task
 import pendulum 
 from minio.error import S3Error
-import json
 
 source_file = "/opt/airflow/dags/airflow_minio.txt"
 
