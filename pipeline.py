@@ -38,6 +38,7 @@ def etlpipeline__exact101():
         
 
     run_staging = KubernetesPodOperator(
+        task_id='staging',
         namespace='anhtq-airflow',
         image='quocanh2202/airflow-dbt:latest',
         name='staging',
