@@ -7,9 +7,9 @@ from airflow.decorators import dag, task
 PROFILES_DIR = "/dbt"
 PROJECT_DIR = "/dbt"
 
-STAGING_PATH_EXACT = "models/staging/*"
+STAGING_PATH_EXACT = "models/staging"
 
-RAW_VAULT_PATH = "models/raw_vault/*"
+RAW_VAULT_PATH = "models/raw_vault"
 
 
 @dag(dag_id="etlpipeline__exact101",
@@ -29,9 +29,9 @@ def etlpipeline__exact101():
 
     # Define bash command for dbt run staging for all sources
     
-    bash_command_staging = f"""dbt run --profiles-dir {PROFILES_DIR} --project-dir {PROJECT_DIR}  -s path:{STAGING_PATH_EXACT}"""
+    bash_command_staging = f"""dbt run --profiles-dir {PROFILES_DIR} --project-dir {PROJECT_DIR}  -s path:{STAGING_PATH_EXACT}/*"""
 
-    bash_command_raw_vault = f"""dbt run --profiles-dir {PROFILES_DIR} --project-dir {PROJECT_DIR} -s path:{RAW_VAULT_PATH}"""
+    bash_command_raw_vault = f"""dbt run --profiles-dir {PROFILES_DIR} --project-dir {PROJECT_DIR} -s path:{RAW_VAULT_PATH}/*"""
     @task()
     def start():
         print("Start")
