@@ -45,7 +45,15 @@ def etlpipeline__exact101():
         cmds=["/bin/bash", "-c", bash_command_staging],
         in_cluster=True,
         startup_timeout_seconds=7200,
-        trigger_rule='all_done'
+        is_delete_operator_pod=True,
+        in_cluster=True,
+        startup_timeout_seconds=7200,
+        # log stdout of the container as task logs
+        get_logs=True,
+        # log events in case of Pod failure
+        log_events_on_failure=True,
+        # enable pushing to XCom
+        do_xcom_push=True,
     )
 
     run_rawvault = KubernetesPodOperator(
@@ -56,7 +64,15 @@ def etlpipeline__exact101():
         cmds=["/bin/bash", "-c", bash_command_raw_vault],
         in_cluster=True,
         startup_timeout_seconds=7200,
-        trigger_rule='all_done'
+        is_delete_operator_pod=True,
+        in_cluster=True,
+        startup_timeout_seconds=7200,
+        # log stdout of the container as task logs
+        get_logs=True,
+        # log events in case of Pod failure
+        log_events_on_failure=True,
+        # enable pushing to XCom
+        do_xcom_push=True,
     )
 
     @task()
