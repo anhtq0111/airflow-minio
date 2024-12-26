@@ -46,7 +46,6 @@ def etlpipeline__exact101():
         in_cluster=True,
         startup_timeout_seconds=7200,
         is_delete_operator_pod=True,
-        in_cluster=True,
         startup_timeout_seconds=7200,
         # log stdout of the container as task logs
         get_logs=True,
@@ -65,7 +64,6 @@ def etlpipeline__exact101():
         in_cluster=True,
         startup_timeout_seconds=7200,
         is_delete_operator_pod=True,
-        in_cluster=True,
         startup_timeout_seconds=7200,
         # log stdout of the container as task logs
         get_logs=True,
