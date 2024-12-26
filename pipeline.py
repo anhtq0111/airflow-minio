@@ -47,7 +47,7 @@ def etlpipeline__exact101():
         startup_timeout_seconds=7200,
         get_logs=True,
         do_xcom_push=True,
-        is_delete_operator_pod=True,
+        on_finish_action='delete_pod'
     )
 
     run_rawvault = KubernetesPodOperator(
@@ -60,7 +60,7 @@ def etlpipeline__exact101():
         startup_timeout_seconds=7200,
         get_logs=True,
         do_xcom_push=True,
-        is_delete_operator_pod=True,
+        on_finish_action='delete_pod'
     )
 
     @task()
