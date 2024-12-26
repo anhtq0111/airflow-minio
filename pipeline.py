@@ -44,7 +44,6 @@ def etlpipeline__exact101():
         image='quocanh2202/airflow-dbt:latest',
         cmds=["/bin/bash", "-c", bash_command_staging],
         in_cluster=True,
-        startup_timeout_seconds=7200,
         is_delete_operator_pod=True,
         startup_timeout_seconds=7200,
         # log stdout of the container as task logs
@@ -62,7 +61,6 @@ def etlpipeline__exact101():
         image='quocanh2202/airflow-dbt:latest',
         cmds=["/bin/bash", "-c", bash_command_raw_vault],
         in_cluster=True,
-        startup_timeout_seconds=7200,
         is_delete_operator_pod=True,
         startup_timeout_seconds=7200,
         # log stdout of the container as task logs
