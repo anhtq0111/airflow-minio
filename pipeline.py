@@ -39,7 +39,7 @@ def etlpipeline__exact101():
 
     run_staging = KubernetesPodOperator(
         task_id='staging',
-        namespace='anhtq-airflow',
+        namespace='anhtq-airflow-helm',
         image='quocanh2202/airflow-dbt:latest',
         name='staging',
         cmds=["/bin/bash", "-c", bash_command_staging],
@@ -53,7 +53,7 @@ def etlpipeline__exact101():
     run_rawvault = KubernetesPodOperator(
         task_id='raw_vault',
         name='raw_vault',
-        namespace='anhtq-airflow',
+        namespace='anhtq-airflow-helm',
         image='quocanh2202/airflow-dbt:latest',
         cmds=["/bin/bash", "-c", bash_command_raw_vault],
         in_cluster=True,
