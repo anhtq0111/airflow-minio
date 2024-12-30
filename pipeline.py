@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
+from airflow.providers.cncf.kubernetes.operators.kubernetes_pod import KubernetesPodOperator
 from airflow.decorators import dag, task
 
 
@@ -7,7 +7,9 @@ from airflow.decorators import dag, task
 PROFILES_DIR = "/dbt"
 PROJECT_DIR = "/dbt"
 
-STAGING_PATH_EXACT = "models/staging"
+METADATA_PATH = "models/operational_metadata"
+
+STAGING_PATH_EXACT = "models/staging/exact101"
 
 RAW_VAULT_PATH = "models/raw_vault"
 
@@ -27,7 +29,7 @@ RAW_VAULT_PATH = "models/raw_vault"
 )
 def etlpipeline__exact101():
 
-    # Define bash command for dbt run staging for all sources
+    bash_command_operation = f"""dbt run --profiles-dir {PROFILES_DIR} --project-dir {PROJECT_DIR} -s path:{METADATA_PATH}/*"""
     
     bash_command_staging = f"""dbt run --profiles-dir {PROFILES_DIR} --project-dir {PROJECT_DIR}  -s path:{STAGING_PATH_EXACT}/*"""
 
@@ -35,38 +37,62 @@ def etlpipeline__exact101():
     @task()
     def start():
         print("Start")
-        
+
+    run_operation = KubernetesPodOperator(
+        task_id='operation',
+        name='operation',
+        namespace='anhtq-airflow-helm',
+        image='huonganh2202/airflow-helm:latest',
+        cmds=["/bin/bash", "-c", bash_command_operation],
+        is_delete_operator_pod=True,
+        in_cluster=True,
+        startup_timeout_seconds=7200,
+        # log stdout of the container as task logs
+        get_logs=True,
+        # log events in case of Pod failure
+        log_events_on_failure=True,
+        # enable pushing to XCom
+        do_xcom_push=True,
+    )
 
     run_staging = KubernetesPodOperator(
         task_id='staging',
-        namespace='anhtq-airflow-helm',
-        image='quocanh2202/airflow-dbt:latest',
         name='staging',
+        namespace='anhtq-airflow-helm',
+        image='huonganh2202/airflow-helm:latest',
         cmds=["/bin/bash", "-c", bash_command_staging],
+        is_delete_operator_pod=True,
         in_cluster=True,
         startup_timeout_seconds=7200,
+        # log stdout of the container as task logs
         get_logs=True,
+        # log events in case of Pod failure
+        log_events_on_failure=True,
+        # enable pushing to XCom
         do_xcom_push=True,
-        on_finish_action='delete_pod'
     )
 
     run_rawvault = KubernetesPodOperator(
         task_id='raw_vault',
         name='raw_vault',
         namespace='anhtq-airflow-helm',
-        image='quocanh2202/airflow-dbt:latest',
+        image='huonganh2202/airflow-helm:latest',
         cmds=["/bin/bash", "-c", bash_command_raw_vault],
+        is_delete_operator_pod=True,
         in_cluster=True,
         startup_timeout_seconds=7200,
+        # log stdout of the container as task logs
         get_logs=True,
+        # log events in case of Pod failure
+        log_events_on_failure=True,
+        # enable pushing to XCom
         do_xcom_push=True,
-        on_finish_action='delete_pod'
     )
 
     @task()
     def end():
         print("End")
 
-    start() >> run_staging >> run_rawvault >> end()
+    start() >> run_operation >>  run_staging >> run_rawvault >> end()
 
 etlpipeline__exact101()
