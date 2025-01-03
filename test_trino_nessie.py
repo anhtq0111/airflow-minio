@@ -12,7 +12,7 @@ TEST_PATH = "models/test_rada"
 
 
 
-@dag(dag_id="etlpipeline__exact101",
+@dag(dag_id="test_rada",
     default_args = {
         'owner': 'airflow',
         'depends_on_past': False,
