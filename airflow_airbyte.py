@@ -17,7 +17,7 @@ def trigger_airbyte_job_example():
 
     sync_job = AirbyteTriggerSyncOperator(
         task_id='airbyte_example',
-        airbyte_conn_id='airbyte_conn_example',
+        airbyte_conn_id='airbyte',
         connection_id='cba5d8de-32e6-4235-b167-1cd275dd7069',
         asynchronous=False,
         timeout=3600,
