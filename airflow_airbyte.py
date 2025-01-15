@@ -18,9 +18,9 @@ def trigger_airbyte_job_example():
         task_id='airbyte_example',
         airbyte_conn_id='airbyte',
         connection_id='628a1b08-bf3b-4a02-87b7-76e94e1d5fb9',
-        asynchronous=False,
-        timeout=3600,
-        wait_seconds=3
+        asynchronous=True,
+        # timeout=3600,
+        # wait_seconds=3
     )
 
     # airbyte_sensor = AirbyteJobSensor(
