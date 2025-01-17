@@ -36,7 +36,7 @@ def test_rada():
         task_id='run_etl',
         name='run_etl',
         namespace='anhtq-airflow',
-        image='huonganh2202/dbt-trino:sample_trino_iceberg_final',
+        image='huonganh2202/dbt-trino:sample_trino_iceberg',
         cmds=["/bin/bash", "-c", bash_run_etl],
         is_delete_operator_pod=True,
         in_cluster=True,
