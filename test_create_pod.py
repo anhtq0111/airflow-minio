@@ -11,7 +11,7 @@ model_path = "models/dbt_trino_model"
 
 
 
-@dag(dag_id="full_from_ingess",
+@dag(dag_id="test_rada",
     default_args = {
         'owner': 'airflow',
         'depends_on_past': False,
@@ -24,7 +24,7 @@ model_path = "models/dbt_trino_model"
     tags=['etl_pipeline'],
     catchup=False
 )
-def full_from_ingess():
+def test_rada():
 
     bash_run_etl = f"""dbt run --profiles-dir {PROFILES_DIR} --project-dir {PROJECT_DIR} -s path:{model_path}/*"""
 
@@ -55,4 +55,4 @@ def full_from_ingess():
 
     start() >> run_etl >> run_etl  >> end()
 
-full_from_ingess()
+test_rada()
