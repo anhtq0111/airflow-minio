@@ -53,6 +53,6 @@ def test_rada():
     def end():
         print("End")
 
-    start() >> run_etl >> run_etl  >> end()
+    start() >> run_etl  >> end()
 
 test_rada()
