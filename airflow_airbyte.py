@@ -31,13 +31,21 @@ def trigger_airbyte_job_example():
         # timeout=3600,
         # wait_seconds=3
     )
-    
+
+    sample_to_postgres = AirbyteTriggerSyncOperator(
+        task_id='sample_to_s3',
+        airbyte_conn_id='airbyte',
+        connection_id='67867b10-12f9-4a95-a135-95029a8fce43',
+        asynchronous=True,
+        # timeout=3600,
+        # wait_seconds=3
+    )
     @task()
     def end():
         print("End")
 
-    # start() >> airbyte_sync_job  >> end()
-    start() >> oracle_to_mysql >> sample_to_s3 >> end()
+    start() >> sample_to_postgres  >> end()
+    # start() >> oracle_to_mysql >> sample_to_s3 >> sample_to_postgres >> end()
 
 
 trigger_airbyte_job_example()
