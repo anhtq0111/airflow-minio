@@ -14,23 +14,23 @@ def trigger_airbyte_job_example():
     def start():
         print("Start")
 
-    oracle_to_mysql = AirbyteTriggerSyncOperator(
-        task_id='oracle_to_mysql',
-        airbyte_conn_id='airbyte',
-        connection_id='628a1b08-bf3b-4a02-87b7-76e94e1d5fb9',
-        asynchronous=True,
-        # timeout=3600,
-        # wait_seconds=3
-    )
+    # oracle_to_mysql = AirbyteTriggerSyncOperator(
+    #     task_id='oracle_to_mysql',
+    #     airbyte_conn_id='airbyte',
+    #     connection_id='628a1b08-bf3b-4a02-87b7-76e94e1d5fb9',
+    #     asynchronous=True,
+    #     # timeout=3600,
+    #     # wait_seconds=3
+    # )
 
-    sample_to_s3 = AirbyteTriggerSyncOperator(
-        task_id='sample_to_s3',
-        airbyte_conn_id='airbyte',
-        connection_id='25faff6b-536b-4328-bf68-189c5c492e12',
-        asynchronous=True,
-        # timeout=3600,
-        # wait_seconds=3
-    )
+    # sample_to_s3 = AirbyteTriggerSyncOperator(
+    #     task_id='sample_to_s3',
+    #     airbyte_conn_id='airbyte',
+    #     connection_id='25faff6b-536b-4328-bf68-189c5c492e12',
+    #     asynchronous=True,
+    #     # timeout=3600,
+    #     # wait_seconds=3
+    # )
 
     sample_to_postgres = AirbyteTriggerSyncOperator(
         task_id='sample_to_postgres',
