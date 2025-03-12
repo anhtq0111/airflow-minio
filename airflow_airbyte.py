@@ -33,7 +33,7 @@ def trigger_airbyte_job_example():
     )
 
     sample_to_postgres = AirbyteTriggerSyncOperator(
-        task_id='sample_to_s3',
+        task_id='sample_to_postgres',
         airbyte_conn_id='airbyte',
         connection_id='67867b10-12f9-4a95-a135-95029a8fce43',
         asynchronous=True,
