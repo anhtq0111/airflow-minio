@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 @dag(dag_id='trigger_airbyte_job_example',
          default_args={'owner': 'airflow'},
-         schedule_interval='@daily',
+         schedule_interval=None,
          start_date=datetime(2025, 1, 1)
 ) 
 def trigger_airbyte_job_example():
