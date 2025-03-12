@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
 from airflow.decorators import dag, task
 
-ETL_DATE = '20240122'
+ETL_DATE = '20240123'
 
 PROFILES_DIR = "/dbt"
 PROJECT_DIR = "/dbt"
