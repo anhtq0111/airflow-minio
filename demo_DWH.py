@@ -11,7 +11,7 @@ STAGING_PATH_INCREMENTAL = "models/staging/incremental"
 
 STAGING_PATH_SOURCE_IMAGE = "models/staging/source_image"
 
-RAW_VAULT_PATH = "models/raw_vault"
+RAW_VAULT_PATH = "models/rawvault"
 
 
 @dag(dag_id="etlpipeline__demo_dwh",
