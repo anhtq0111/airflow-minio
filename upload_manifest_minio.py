@@ -44,7 +44,7 @@ def upload_manifest_minio():
         name='run_upload',
         namespace='anhtq-airflow',
         image='minio/mc',
-        cmd=["sh", "-c"],
+        cmds=["sh", "-c"],
         arguments=[
         "mc alias set myminio http://192.168.1.17:32023 minioadmin minioadmin && "
         "mc cp /dbt/target/manifest.json myminio/dbt-artifacts/dbt/manifest.json"
