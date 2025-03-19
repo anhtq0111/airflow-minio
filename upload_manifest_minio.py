@@ -12,7 +12,7 @@ volume = k8s.V1Volume(
 )
 
 volume_mount = k8s.V1VolumeMount(
-    name="dbt-storage", mount_path="/dbt/target", sub_path=None
+    name="dbt-storage", mount_path="/dbt/target", sub_path='manifest.json'
 )
 
 
@@ -23,7 +23,7 @@ def upload_manifest_minio():
         task_id='run_etl',
         name='run_etl',
         namespace='anhtq-airflow',
-        image='huonganh2202/dbt-trino:sample_trino_iceberg_f',
+        image='huonganh2202/demo-dwh:v2',
         cmds=["/bin/bash", "-c"],
         arguments=[
         "dbt compile --profiles-dir /dbt --project-dir /dbt"
@@ -46,8 +46,8 @@ def upload_manifest_minio():
         image='minio/mc',
         cmds=["sh", "-c"],
         arguments=[
-        "mc alias set myminio http://192.168.1.17:32023 minioadmin minioadmin && "
-        "mc cp /dbt/target/manifest.json myminio/dbt-artifacts/dbt/manifest.json"
+        "mc alias set minio http://192.168.1.17:32023 rafflesit rafflesit && "
+        "mc cp /dbt/target minio/om-dbt-demo/dwh-demo"
         ],
         is_delete_operator_pod=True,
         get_logs=True,
@@ -56,7 +56,13 @@ def upload_manifest_minio():
         volume_mounts=[volume_mount],
     )
 
-    run_compile >> run_upload
+    @task()
+    def end():
+        print("End")
+
+    
+    # run_compile >> run_upload
+    run_compile >> end()
 
 upload_manifest_minio()
 
