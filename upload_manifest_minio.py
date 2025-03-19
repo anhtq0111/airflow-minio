@@ -7,12 +7,12 @@ from kubernetes.client import models as k8s
 
 # The destination bucket and filename on the MinIO server
 volume = k8s.V1Volume(
-    name="dbt-storage",
+    name="dbt",
     persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name="dbt-storage-pvc"),
 )
 
 volume_mount = k8s.V1VolumeMount(
-    name="dbt-storage", mount_path="/dbt/target", sub_path=None
+    name="dbt", mount_path="/dbt/target", sub_path=None
 )
 
 
