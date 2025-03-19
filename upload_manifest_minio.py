@@ -19,6 +19,10 @@ volume_mount = k8s.V1VolumeMount(
 @dag(schedule=None, start_date=pendulum.datetime(2024, 1, 1, tz="UTC"), catchup=False)
 def upload_manifest_minio():
 
+    @task()
+    def start():
+        print("Start")
+
     run_compile = KubernetesPodOperator(
         task_id='run_etl',
         name='run_etl',
@@ -39,30 +43,30 @@ def upload_manifest_minio():
         volume_mounts=[volume_mount],
     )
 
-    run_upload = KubernetesPodOperator(
-        task_id='run_upload',
-        name='run_upload',
-        namespace='anhtq-airflow',
-        image='minio/mc',
-        cmds=["sh", "-c"],
-        arguments=[
-        "mc alias set minio http://192.168.1.17:32023 rafflesit rafflesit && "
-        "mc cp /dbt/target minio/om-dbt-demo/dwh-demo"
-        ],
-        is_delete_operator_pod=True,
-        get_logs=True,
-        in_cluster=True,
-        volumes=[volume],
-        volume_mounts=[volume_mount],
-    )
+    # run_upload = KubernetesPodOperator(
+    #     task_id='run_upload',
+    #     name='run_upload',
+    #     namespace='anhtq-airflow',
+    #     image='minio/mc',
+    #     cmds=["sh", "-c"],
+    #     arguments=[
+    #     "mc alias set minio http://192.168.1.17:32023 rafflesit rafflesit && "
+    #     "mc cp /dbt/target minio/om-dbt-demo/dwh-demo"
+    #     ],
+    #     is_delete_operator_pod=True,
+    #     get_logs=True,
+    #     in_cluster=True,
+    #     volumes=[volume],
+    #     volume_mounts=[volume_mount],
+    # )
 
     @task()
     def end():
         print("End")
 
     
-    # run_compile >> run_upload
-    run_compile >> end()
+    # start() >> run_compile >> run_upload >> end()
+    start() >> run_compile >> end()
 
 upload_manifest_minio()
 
