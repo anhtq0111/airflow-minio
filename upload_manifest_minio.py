@@ -3,9 +3,18 @@ from airflow.decorators import dag, task
 import pendulum 
 from minio.error import S3Error
 from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
-
+from kubernetes.client import models as k8s
 
 # The destination bucket and filename on the MinIO server
+volume = k8s.V1Volume(
+    name="dbt-storage",
+    persistent_volume_claim=k8s.V1PersistentVolumeClaimVolumeSource(claim_name="dbt-storage-pvc"),
+)
+
+volume_mount = k8s.V1VolumeMount(
+    name="dbt-storage", mount_path="/dbt/target", sub_path=None
+)
+
 
 @dag(schedule=None, start_date=pendulum.datetime(2024, 1, 1, tz="UTC"), catchup=False)
 def upload_manifest_minio():
@@ -26,14 +35,8 @@ def upload_manifest_minio():
         get_logs=True,
         # log events in case of Pod failure
         log_events_on_failure=True,
-        volumes=[
-        {
-            "name": "dbt-storage", "persistentVolumeClaim": {"claimName": "dbt-storage-pvc"}
-        }
-        ],
-        volume_mounts=[
-            {"name": "dbt-storage", "mountPath": "/dbt/target"}
-        ],
+        volumes=[volume],
+        volume_mounts=[volume_mount],
     )
 
     run_upload = KubernetesPodOperator(
@@ -49,14 +52,8 @@ def upload_manifest_minio():
         is_delete_operator_pod=True,
         get_logs=True,
         in_cluster=True,
-        volumes=[
-            {
-                "name": "dbt-storage", "persistentVolumeClaim": {"claimName": "dbt-storage-pvc"}
-            }
-        ],
-        volume_mounts=[
-            {"name": "dbt-storage", "mountPath": "/dbt/target"}
-        ]
+        volumes=[volume],
+        volume_mounts=[volume_mount],
     )
 
     run_compile >> run_upload
