@@ -19,7 +19,7 @@ FRKRG_TO_STAGING = '65bf03dd-2ffa-41c7-97ce-40212cfbf2a4'
 FRSRG_TO_STAGING = '8c715ef7-aafc-438e-b404-69d6995bc82e'
 PRPROJECT_TO_STAGING = 'c72f8f9c-e75d-44ce-b50a-5365a2b66e4a'
 
-@dag(dag_id="etlpipeline__demo_dwh",
+@dag(dag_id="demo_DWH",
     default_args = {
         'owner': 'airflow',
         'depends_on_past': False,
@@ -29,10 +29,10 @@ PRPROJECT_TO_STAGING = 'c72f8f9c-e75d-44ce-b50a-5365a2b66e4a'
     description='A DAG writed by Quoc Anh to run dbt models for demo dwh',
     start_date=datetime(2025, 1, 1),
     schedule_interval=None,
-    tags=['etl_pipeline_demo'],
+    tags=['demo_dwh'],
     catchup=False
 )
-def etlpipeline__demo_dwh():
+def demo_dwh():
 
     bash_command_incremental = f"""dbt run --profiles-dir {PROFILES_DIR} --project-dir {PROJECT_DIR} --vars '{{ "etl_date": "{ETL_DATE}"}}' -s path:{STAGING_PATH_INCREMENTAL}/*"""
 
@@ -145,4 +145,4 @@ def etlpipeline__demo_dwh():
 
     start() >> airbyte_syncs >> run_incremental >> run_rawvault >> run_data_mart >> end()
 
-etlpipeline__demo_dwh()
+demo_dwh()
