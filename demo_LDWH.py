@@ -5,7 +5,7 @@ from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperato
 from airflow.decorators import dag, task
 from airflow.utils.task_group import TaskGroup
 
-ETL_DATE = '20240125'
+ETL_DATE = '20240126'
 
 PROFILES_DIR = "/dbt"
 PROJECT_DIR = "/dbt"
