@@ -4,7 +4,7 @@ from airflow.models import Variable
 from datetime import datetime, timedelta
 
 def update_etl_date():
-    etl_date = Variable.get("etl_date")
+    etl_date = Variable.get("ETL_DATE")
     
     # Chuyển đổi sang kiểu datetime và tăng thêm 1 ngày
     new_etl_date = (datetime.strptime(etl_date, "%Y%m%d") + timedelta(days=1)).strftime("%Y%m%d")
