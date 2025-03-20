@@ -10,7 +10,7 @@ def update_etl_date():
     new_etl_date = (datetime.strptime(etl_date, "%Y%m%d") + timedelta(days=1)).strftime("%Y%m%d")
 
     # Cập nhật lại biến etl_date trong Airflow
-    Variable.set("etl_date", new_etl_date)
+    Variable.set("ETL_DATE", new_etl_date)
 
     return new_etl_date
 
