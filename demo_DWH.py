@@ -4,8 +4,9 @@ from airflow.providers.airbyte.sensors.airbyte import AirbyteJobSensor
 from airflow.providers.cncf.kubernetes.operators.pod import KubernetesPodOperator
 from airflow.decorators import dag, task
 from airflow.utils.task_group import TaskGroup
+from airflow.models import Variable
 
-ETL_DATE = '20240125'
+ETL_DATE = Variable.get("ETL_DATE")
 
 PROFILES_DIR = "/dbt"
 PROJECT_DIR = "/dbt"
@@ -140,9 +141,19 @@ def demo_dwh():
     )
 
     @task()
+    def update_etl_date():
+        # Chuyển đổi sang kiểu datetime và tăng thêm 1 ngày
+        new_etl_date = (datetime.strptime(ETL_DATE, "%Y%m%d") + timedelta(days=1)).strftime("%Y%m%d")
+
+        # Cập nhật lại biến etl_date trong Airflow
+        Variable.set("ETL_DATE", new_etl_date)
+
+        return new_etl_date
+
+    @task()
     def end():
         print("End")
 
-    start() >> airbyte_syncs >> run_incremental >> run_rawvault >> run_data_mart >> end()
+    start() >> airbyte_syncs >> run_incremental >> run_rawvault >> run_data_mart >> update_etl_date() >> end()
 
 demo_dwh()
